@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Forkfolio Early Access Waitlist</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="description" content="Forkfolio turns your public GitHub into a self-updating portfolio with an AI assistant that answers visitors' questions about your work." />
 <style>
   :root { color-scheme: dark; }
@@ -92,7 +93,7 @@
     </ul>
 
     <form id="f" autocomplete="email">
-      <input class="hp" type="text" name="website" tabindex="-1" aria-hidden="true" />
+      <input class="hp" type="text" name="ff_hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <input id="email" type="email" required placeholder="name@xy.com" aria-label="Email address" />
       <button id="btn" type="submit">Submit</button>
     </form>
@@ -117,7 +118,7 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   msg.className = "msg";
   // honeypot: bots get a fake win, no insert
-  if (form.website.value) {
+  if (form.ff_hp.value) {
     showDone("You're on the list", "We'll email you your access link the moment we deploy.");
     return;
   }
