@@ -47,6 +47,13 @@
   }
   button:hover:not(:disabled) { background: #1a4a3c; }
   button:disabled { opacity: .5; cursor: wait; }
+  .cta {
+    display: block; text-align: center; margin-top: 28px;
+    font-weight: 600; font-size: 16px; text-decoration: none;
+    background: #14332a; color: #7ef0b2; border: 1px solid #1f7a5c;
+    border-radius: 10px; padding: 14px 20px; transition: .15s;
+  }
+  .cta:hover { background: #1a4a3c; }
   .hp { position: absolute; left: -9999px; opacity: 0; height: 0; overflow: hidden; }
   .note { margin-top: 14px; font-size: 12.5px; color: #68727f; }
   .msg { margin-top: 14px; font-size: 14px; display: none; }
@@ -65,7 +72,7 @@
 </head>
 <body>
   <div class="glow"></div>
-  <div class="card">
+  <div class="card" id="waitlistView">
     <div class="logo">FORKFOLIO</div>
     <h1>Early Access Waitlist</h1>
     <p class="lede">
@@ -107,7 +114,37 @@
     </div>
   </div>
 
+  <!-- live mode: same branding, the email form is replaced by the claim CTA -->
+  <div class="card" id="liveView" style="display:none">
+    <div class="logo">FORKFOLIO</div>
+    <h1>We're live</h1>
+    <p class="lede">
+      Forkfolio turns your public GitHub into a self-updating portfolio with an
+      AI assistant that answers visitors' questions about your work, scoped
+      strictly to your own data.
+    </p>
+    <p class="lede" style="margin-top:10px">
+      Sign in with GitHub, hit Sync, and your portfolio is live in about
+      3 minutes. It keeps itself updated from then on.
+    </p>
+    <a class="cta" href="https://forkfolio.dev/">Claim your portfolio</a>
+    <p class="note">Free to start. No card, no catch.</p>
+  </div>
+
 <script>
+/* mode switch: mode.json (same origin) decides waitlist vs live content.
+   Any fetch/parse failure leaves the waitlist view in place (safe default). */
+fetch("mode.json", { cache: "no-store" })
+  .then((r) => (r.ok ? r.json() : null))
+  .then((m) => {
+    if (m && m.mode === "live") {
+      document.getElementById("waitlistView").style.display = "none";
+      document.getElementById("liveView").style.display = "";
+      document.title = "Forkfolio is live";
+    }
+  })
+  .catch(() => {});
+
 const SUPA_URL = "https://aenqrhxqkbymwgemjmyr.supabase.co";
 const SUPA_KEY = "sb_publishable_O_-GXiK7yijX074rcEEkUA_JqmMBvHE";
 const form = document.getElementById("f");
